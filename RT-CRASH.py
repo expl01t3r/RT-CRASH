@@ -34,47 +34,29 @@ busca = str(arg.hash).lower()
 text = [str(x).rstrip() for x in text]
 temp = ''
 
-
+hashFunc = None
 if arg.tipo == '1':
-    for x in text:
-        temp = hashlib.md5(x.encode('utf-8')).hexdigest()
-        if busca == temp:
-            print('[+]Valor encontrado\nHash: {hash}\nTexto Original: {text}\n{xD}' .format(
-                hash = busca, text = x, xD = ('-'*30)))
-            break
+    hashFunc = hashlib.md5
 elif arg.tipo == '2':
-    for x in text:
-        temp = hashlib.sha1(x.encode('utf-8')).hexdigest()
-        if busca == temp:
-            print('[+]Valor encontrado\nHash: {hash}\nTexto Original: {text}\n{xD}' .format(
-                hash = busca, text = x, xD = ('-'*30)))
-            break
+    hashFunc = hashlib.sha1
 elif arg.tipo == '3':
-    for x in text:
-        temp = hashlib.sha224(x.encode('utf-8')).hexdigest()
-        if busca == temp:
-            print('[+]Valor encontrado\nHash: {hash}\nTexto Original: {text}\n{xD}' .format(
-                hash = busca, text = x, xD = ('-'*30)))
-            break
+    hashFunc = hashlib.sha224
 elif arg.tipo == '4':
-    for x in text:
-        temp = hashlib.sha256(x.encode('utf-8')).hexdigest()
-        if busca == temp:
-            print('[+]Valor encontrado\nHash: {hash}\nTexto Original: {text}\n{xD}' .format(
-                hash = busca, text = x, xD = ('-'*30)))
-            break
+    hashFunc = hashlib.sha256
 elif arg.tipo == '5':
-    for x in text:
-        temp = hashlib.sha384(x.encode('utf-8')).hexdigest()
-        if busca == temp:
-            print('[+]Valor encontrado\nHash: {hash}\nTexto Original: {text}\n{xD}' .format(
-                hash = busca, text = x, xD = ('-'*30)))
-            break
+    hashFunc = hashlib.sha384
 elif arg.tipo == '6':
-    for x in text:
-        temp = hashlib.sha512(x.encode('utf-8')).hexdigest()
-        if busca == temp:
-            print('[+]Valor encontrado\nHash: {hash}\nTexto Original: {text}\n{xD}' .format(
-                hash = busca, text = x, xD = ('-'*30)))
-            break
+    hashFunc = hashlib.sha512
+
+
+for x in text:
+    temp = hashFunc(x.encode('utf-8')).hexdigest()
+    if busca == temp:
+        print('[+]Valor encontrado\nHash: {hash}\nTexto Original: {text}\n{xD}' .format(
+            hash = busca, text = x, xD = ('-'*30)))
+        break
+
+
+
+
 print('Finalizado')
