@@ -29,9 +29,9 @@ argumentos.add_argument('--wlist', action = 'store', dest = 'wordlist', required
 arg = argumentos.parse_args()
 
 
-text = open(arg.wordlist).readlines()
+text = open(arg.wordlist)
 busca = str(arg.hash).lower()
-text = [str(x).rstrip() for x in text]
+opcode = 0
 temp = ''
 
 hashFunc = None
@@ -50,13 +50,15 @@ elif arg.tipo == '6':
 
 
 for x in text:
-    temp = hashFunc(x.encode('utf-8')).hexdigest()
+    temp = hashFunc(x.rstrip().encode('utf-8')).hexdigest()
     if busca == temp:
         print('[+]Valor encontrado\nHash: {hash}\nTexto Original: {text}\n{xD}' .format(
             hash = busca, text = x, xD = ('-'*30)))
+        opcode = 1
         break
+text.close()
+if opcode == 0:
+	print('Valor não encontrado, tente com uma wordlist mais completa ;)')
+else:
+	print('Finalizado')
 
-
-
-
-print('Finalizado')
