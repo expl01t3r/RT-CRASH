@@ -13,8 +13,13 @@ print('''
 ''')
 import hashlib
 import argparse
+import sys
 
-
+def progress():
+	sys.stdout.write("\r")
+	sys.stdout.write('Tentando senha: {senha} Para a hash {tmphash}'
+	.format(senha = str(x).rstrip(), tmphash = busca))
+	
 argumentos = argparse.ArgumentParser()
 argumentos.add_argument('--tipo', action = 'store', dest = 'tipo', required = True, help = '''
 1 = MD5
@@ -32,6 +37,7 @@ arg = argumentos.parse_args()
 text = open(arg.wordlist)
 busca = str(arg.hash).lower()
 opcode = 0
+contador = 0
 temp = ''
 
 hashFunc = None
@@ -47,18 +53,24 @@ elif arg.tipo == '5':
     hashFunc = hashlib.sha384
 elif arg.tipo == '6':
     hashFunc = hashlib.sha512
+else:
+	print('Tipo de hash inválido')
+	exit()
 
 
 for x in text:
     temp = hashFunc(x.rstrip().encode('utf-8')).hexdigest()
+    progress()
     if busca == temp:
-        print('[+]Valor encontrado\nHash: {hash}\nTexto Original: {text}\n{xD}' .format(
-            hash = busca, text = x, xD = ('-'*30)))
+        print('\n\n[+]Valor encontrado\nHash: {hash}\nTexto Original: {text}{xD}\nNumero de tentativas executadas: {cnt}' .format(
+            hash = busca, text = x, xD = ('-'*30), cnt = contador))
         opcode = 1
         break
+    contador += 1 
+	
 text.close()
 if opcode == 0:
-	print('Valor não encontrado, tente com uma wordlist mais completa ;)')
+	print('Valor não encontrado, tente com uma wordlist mais completa ;)\nNumero de tentativas executadas: {cnt}' .format(cnt = contador))
 else:
 	print('Finalizado')
 
